@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+'''#!/usr/bin/python3'''
 
 from socket import * 
 import threading
@@ -96,24 +96,29 @@ class InitClient:
             exit(0)
 
 
-if __name__ == "__main__":
-    desc = 'Python Port Scanner - Multithreaded'
-    parser = argparse.ArgumentParser(description=desc)
-    parser.add_argument('-n', type=str, default=gethostbyname(gethostname()),
-                        dest='host',
-                        help='enter the host IP %(default)s')
-    parser.add_argument('-p', type=int, default=1,
-                        dest='startPort',
-                        help='specify the starting port address %(default)s')
-    parser.add_argument('-',type=int, default=1024,
-                        dest='endPort',
-                        help='specify the ending port address %(default)s')
-    parser.add_argument('-Pn', action='store_true', dest='increaseWait',
-                        help='wait for 3s before before determining that socket is closed.') 
-    options = parser.parse_args()
 
-    if hasattr(options, '-h'):
-        parser.print_help()
-    
-    init = InitClient(options)
+class ArgumentParsing:
+    def __init__(self):
+        desc = 'Python Port Scanner - Multithreaded'
+        parser = argparse.ArgumentParser(description=desc)
+        parser.add_argument('-n', type=str, default=gethostbyname(gethostname()),
+                            dest='host',
+                            help='enter the host IP %(default)s')
+        parser.add_argument('-p', type=int, default=1,
+                            dest='startPort',
+                            help='specify the starting port address %(default)s')
+        parser.add_argument('-',type=int, default=1024,
+                            dest='endPort',
+                            help='specify the ending port address %(default)s')
+        parser.add_argument('-Pn', action='store_true', dest='increaseWait',
+                            help='wait for 3s before before determining that socket is closed.') 
+        self.options = parser.parse_args()
+
+        if hasattr(self.options, '-h'):
+            parser.print_help()
+
+
+if __name__ == "__main__":
+    arguments = ArgumentParsing()
+    init = InitClient(arguments.options)
     init.start()
